@@ -67,6 +67,28 @@ angular.module('perfect_scrollbar', []).directive('perfectScrollbar',
         jqWindow.off('resize', update);
         $elem.perfectScrollbar('destroy');
       });
+      
+      // The following lines from https://github.com/mohitjee15/ng-perfect-scroll/blob/master/module(use_this)/perfect-scroll-module/perfectScrollModule.js
+      // Function to find the sum height of all the elements inside the element on which the directive is applied
+      var actualHeight    =   function(){
+          "use strict";
+          var totalHeight = 0;
+          $elem.children().each(function(){
+              totalHeight = totalHeight + angular.element(this).outerHeight();
+          });
+          return totalHeight;
+      };
+      
+      //update the actual height of the element
+      $scope.$watch(function(){
+          "use strict";
+          $scope.elementHeight =   actualHeight();
+      });
+      //update the scrollbar when the actual height of the element is changed
+      $scope.$watch('elementHeight',function(){
+          "use strict";
+          $elem.perfectScrollbar('update');
+      });
 
     }
   };
